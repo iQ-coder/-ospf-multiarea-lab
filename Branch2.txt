@@ -1,0 +1,32 @@
+! ============================================================
+! Branch2 Router - Area 2
+! Router ID: 3.3.3.3
+! Interfaces: Gig0/0 (LAN), S0/3/1 (to HQ)
+! ============================================================
+
+version 15.1
+hostname Branch2
+
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+
+interface GigabitEthernet0/0
+ ip address 192.168.3.1 255.255.255.0
+ duplex auto
+ speed auto
+
+interface Serial0/3/1
+ ip address 10.0.0.6 255.255.255.252
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 cisco123
+
+router ospf 1
+ log-adjacency-changes
+ network 10.0.0.4 0.0.0.3 area 0
+ network 192.168.3.0 0.0.0.255 area 2
+ network 3.3.3.3 0.0.0.0 area 2
+
+line vty 0 4
+ login
+
+end
